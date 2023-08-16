@@ -2,7 +2,7 @@
 #define TIMER_H
 #include <functional>
 #include <pthread.h>
-
+#include "TimerEvent.h"
 
 namespace SCE{
 class Timer{
@@ -14,7 +14,7 @@ public:
     static long long getRealTime() const; // 获取当前真实时间（以毫秒为单位）
     double getTime() const; // 获取经过的时间（以秒为单位）
     void sleep(unsigned long milliseconds); // 使程序休眠一定时间（以毫秒为单位）
-    void setTimer(std::function<bool(long long)> trigger , std::function<void()> callbackFunc); // 设置定时器：传入触发条件和回调函数
+    void setTimer(std::function<bool(long long)> trigger , TimerEvent *event); // 设置定时器：传入触发条件和回调函数
     void setSpeed(double newSpeed); // 设置计时速度倍率
     void resetTime(); // 重置计时器
     void recordTime(); // 记录当前时间点
@@ -28,7 +28,7 @@ private:
     double speed; // 计时速度倍率
     TimePoint lastRecordedTime; // 上次记录时间点
     pthread_t timerthread; // 计时器线程
-    std::vector<std::pair<std::function<bool(long long)> ,std::function<void()> > > timers; // 定时器触发条件和回调函数的集合
+    std::vector<std::pair<std::function<bool(long long)> , TimerEvent* > > timers; // 定时器触发条件和回调函数的集合
 };
 }；
 #endif
