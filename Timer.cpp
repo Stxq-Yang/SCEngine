@@ -1,7 +1,8 @@
 #include <chrono>
 #include <vector>
 #include <thread>
-#include "Timer.cpp"
+#include "Timer.h"
+#include "TimeEvent.cpp"
 namespace SCE{
 long long Timer::getRealTime() const {
     auto currentTime = Clock::now();
