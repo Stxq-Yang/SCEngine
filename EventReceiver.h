@@ -23,5 +23,5 @@ public:
 private:
     std::map<std::string, std::vector<std::function<void(Event*)>>> registeredEvent;
 };
-}
+};
 #endif // EVENTRECEIVER_H
