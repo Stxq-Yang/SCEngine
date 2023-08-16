@@ -1,3 +1,6 @@
+#include <chrono>
+#include <vector>
+#include <thread>
 #include "Timer.cpp"
 namespace SCE{
 long long Timer::getRealTime() const {
