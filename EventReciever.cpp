@@ -26,4 +26,20 @@ void EventReceiver::processEvent(Event* event) {
             i(event);
     }
 }
+void processEvent() {
+    for (auto i : EventBus) {
+        i->processEvent(EventQueue.top());
+    }
+    EventQueue.pop();
+}
+
+void sendEvent(Event* event) {
+    EventQueue.push(event);
+}
+
+void processAllEvent() {
+    while (!EventQueue.empty()) {
+        processEvent();
+    }
+}
 };
