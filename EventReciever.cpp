@@ -1,5 +1,5 @@
 #include "EventReceiver.h"
-namsepace SCE{
+namespace SCE{
 EventReceiver::EventReceiver() {
 }
 
