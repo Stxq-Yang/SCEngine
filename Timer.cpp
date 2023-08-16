@@ -16,8 +16,9 @@ void Timer::sleep(unsigned long milliseconds) {
     std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
 }
 
-void Timer::setTimer(std::function<bool(long long)> trigger, std::function<void()> callbackFunc) {
-    timers.push_back({trigger, callbackFunc});
+void Timer::setTimer(std::function<bool(long long)> trigger, TimerEvent* event) {
+    if (trigger(getTime()))
+        sendEvent(event);
 }
 
 void Timer::setSpeed(double newSpeed) {
