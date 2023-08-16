@@ -20,7 +20,7 @@ public:
     }
     
     // 获取当前真实时间（以毫秒为单位）
-    long long getRealTime() const {
+    static long long getRealTime() const {
         auto currentTime = Clock::now();
         return std::chrono::duration_cast<std::chrono::milliseconds>(currentTime.time_since_epoch()).count();
     }
