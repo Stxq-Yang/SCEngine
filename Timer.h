@@ -1,10 +1,6 @@
-#include <iostream>
-#include <chrono>
-#include <vector>
-#include <map>
 #include <functional>
 #include <pthread.h>
-#include <thread>
+
 
 namespace SCE{
 class Timer{
