@@ -1,5 +1,5 @@
 #include "Event.h"
-
+namespace SCE{
 int Event::firstlevel = 5;
 
 Event::Event(long long time) : dtime(time) {
@@ -16,3 +16,4 @@ long long Event::getDetachTime() {
 std::string Event::getClassName() {
     return EventClassName;
 }
+};
