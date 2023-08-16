@@ -30,5 +30,5 @@ private:
     pthread_t timerthread; // 计时器线程
     std::vector<std::pair<std::function<bool(long long)> , TimerEvent* > > timers; // 定时器触发条件和回调函数的集合
 };
-}；
+};
 #endif
