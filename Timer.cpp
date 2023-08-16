@@ -18,8 +18,7 @@ void Timer::sleep(unsigned long milliseconds) {
 }
 
 void Timer::setTimer(std::function<bool(long long)> trigger, TimerEvent* event) {
-    if (trigger(getTime()))
-        sendEvent(event);
+     timers.push_back({trigger,event});
 }
 
 void Timer::setSpeed(double newSpeed) {
@@ -46,9 +45,11 @@ void* Timer::threadwrapper(void* arg) {
     std::this_thread::sleep_for(std::chrono::milliseconds(int(ths->speed * 1000)));
     ths->gtime++;
     for (auto it = ths->timers.begin(); it != ths->timers.end(); it++) {
-        if (it->first(ths->gtime))
-            it->second();
+        if (it->first(ths->gtime)){
+            it->second->deptime=getRealTime();
+            sendEvent(it->second);
+        }
     }
     return 0;
 }
-}:
+}
