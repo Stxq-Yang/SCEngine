@@ -37,7 +37,7 @@ void sendEvent(Event* event) {
     EventQueue.push(event);
 }
 
-void processAllEvent() {
+void processEvents() {
     while (!EventQueue.empty()) {
         processEvent();
     }
