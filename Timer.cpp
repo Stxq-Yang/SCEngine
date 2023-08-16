@@ -1,3 +1,5 @@
+#ifndef TIMER_CPP
+#define TIMER_CPP
 #include <chrono>
 #include <vector>
 #include <thread>
@@ -53,3 +55,4 @@ void* Timer::threadwrapper(void* arg) {
     return 0;
 }
 }
+#endif
