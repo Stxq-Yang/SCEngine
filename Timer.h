@@ -1,3 +1,5 @@
+#ifndef TIMER_H
+#define TIMER_H
 #include <functional>
 #include <pthread.h>
 
@@ -29,3 +31,4 @@ private:
     std::vector<std::pair<std::function<bool(long long)> ,std::function<void()> > > timers; // 定时器触发条件和回调函数的集合
 };
 }；
+#endif
