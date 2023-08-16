@@ -1,10 +1,8 @@
-#ifndef TIMER_CPP
-#define TIMER_CPP
 #include <chrono>
 #include <vector>
 #include <thread>
 #include "Timer.h"
-#include "TimeEvent.cpp"
+#include "TimeEvent.h"
 namespace SCE{
 long long Timer::getRealTime() const {
     auto currentTime = Clock::now();
@@ -55,4 +53,3 @@ void* Timer::threadwrapper(void* arg) {
     return 0;
 }
 }
-#endif
