@@ -1,5 +1,5 @@
 #include "EventReceiver.h"
-
+namsepace SCE{
 EventReceiver::EventReceiver() {
 }
 
@@ -26,3 +26,4 @@ void EventReceiver::processEvent(Event* event) {
             i(event);
     }
 }
+};
