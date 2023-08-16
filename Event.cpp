@@ -1,7 +1,7 @@
 #include "Event.h"
 namespace SCE{
 int Event::firstlevel = 5;
-
+std::string Event::EventClassName = "BaseEvent";
 Event::Event(long long time) : dtime(time) {
 }
 
