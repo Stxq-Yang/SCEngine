@@ -9,7 +9,7 @@ public:
     using TimePoint = std::chrono::time_point<Clock>;
     
     Timer(double speed=1.0f); // 构造函数，初始化计时器
-    long long getRealTime() const; // 获取当前真实时间（以毫秒为单位）
+    static long long getRealTime() const; // 获取当前真实时间（以毫秒为单位）
     double getTime() const; // 获取经过的时间（以秒为单位）
     void sleep(unsigned long milliseconds); // 使程序休眠一定时间（以毫秒为单位）
     void setTimer(std::function<bool(long long)> trigger , std::function<void()> callbackFunc); // 设置定时器：传入触发条件和回调函数
