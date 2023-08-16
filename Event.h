@@ -2,7 +2,7 @@
 #define EVENT_H
 
 #include <string>
-
+namespace SCE{
 class Event {
 public:
     Event(long long time);
@@ -18,5 +18,5 @@ private:
     static int firstlevel;
     std::string EventClassName;
 };
-
+};
 #endif // EVENT_H
