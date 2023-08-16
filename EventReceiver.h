@@ -36,6 +36,6 @@ void processEvent();
 
 void sendEvent(Event* event);
 
-void processAllEvent();
+void processEvents();
 };
 #endif // EVENTRECEIVER_H
