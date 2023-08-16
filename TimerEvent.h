@@ -1,3 +1,5 @@
+#ifndef TIMEREVENT_H
+#define TIMEREVENT_h
 #include "Timer.h"
 #include "Event.h"
 namespace SCE  {
@@ -7,3 +9,4 @@ public:
   long long deptime;
 };
 }
+#endif
