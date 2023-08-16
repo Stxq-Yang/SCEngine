@@ -1,6 +1,7 @@
 #include "EventReceiver.h"
 namespace SCE{
 EventReceiver::EventReceiver() {
+    EventBus.push_back(this);
 }
 
 void EventReceiver::registerEvent(Event* event, std::function<void(Event*)> todo) {
