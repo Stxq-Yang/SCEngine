@@ -14,7 +14,6 @@ public:
     std::string getClassName();
 
 private:
-    long long dtime;
     static int firstlevel;
     static std::string EventClassName;
 };
