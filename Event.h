@@ -16,7 +16,7 @@ public:
 private:
     long long dtime;
     static int firstlevel;
-    std::string EventClassName;
+    static std::string EventClassName;
 };
 };
 #endif // EVENT_H
