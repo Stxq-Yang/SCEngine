@@ -5,11 +5,9 @@
 namespace SCE{
 class Event {
 public:
-    Event(long long time);
+    Event();
 
     static int getFirstLevel();
-
-    long long getDetachTime();
 
     std::string getClassName();
 
