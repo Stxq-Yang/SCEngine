@@ -2,7 +2,9 @@
 class ResizeEvent:public Event{
 public:
   ResizeEvent(){}
-  setSize(int width,int high);
+  void setSize(int width,int high);
+  int getWidth();
+  int getHigh();
 private:
-  int wdidth,high;
+  int width,high;
 }
