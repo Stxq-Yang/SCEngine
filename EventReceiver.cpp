@@ -31,6 +31,7 @@ void processEvent() {
     for (auto i : EventBus) {
         i->processEvent(EventQueue.top());
     }
+    delete EventQueue.top();
     EventQueue.pop();
 }
 
