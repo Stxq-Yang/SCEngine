@@ -7,10 +7,10 @@ namespace SCE  {
     this->high=high;
     
   }
-  ResizeEvent::int getWidth(){
+  int ResizeEvent::getWidth(){
     return this->width;
   }
-  ResizeEvent::int getHigh(){
+  int ResizeEvent::getHigh(){
     return this->high;
   }
 }
