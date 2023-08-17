@@ -1,4 +1,5 @@
 #include "Event.h"
+namespace SCE{
 class ResizeEvent:public Event{
 public:
   ResizeEvent(){}
@@ -7,4 +8,5 @@ public:
   int getHigh();
 private:
   int width,high;
+}
 }
