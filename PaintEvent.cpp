@@ -1,5 +1,5 @@
 #include "PaintEvent.h"
 namespace SCE  {
-  int Event::firstlevel = 3;
-  std::string Event::EventClassName = "TimerEvent";
+  int PaintEvent::firstlevel = 3;
+  std::string PaintEvent::EventClassName = "PaintEvent";
 }
