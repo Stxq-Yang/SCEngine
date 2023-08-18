@@ -1,11 +1,12 @@
 #include "KeyVal.h"
+#include "Event.h"
 namespace SCE{
   enum KeyEventType{
     KeyDown,
     KeyPress,
     KeyUp
   };
-  class KeyEvent{
+  class KeyEvent :public Event{
     public:
       KeyEvent(){}
       void setEventType(KeyEventType type);
