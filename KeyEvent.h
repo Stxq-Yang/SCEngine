@@ -10,7 +10,7 @@ namespace SCE{
       KeyEvent(){}
       void setEventType(KeyEventType type);
       KeyEventType getEventType();
-      void setKayCode(SCKey type);
+      void setKayCode(SCKey code);
       SCKey getKeyCodee();
     private:
       SCkey keyCode;
