@@ -19,7 +19,7 @@ class MouseEvent:public Event{
       int getY();
     private:
       MouseEventType eventType; 
-      int x,y;
+      int x,y,lastx,lasty;
       int param;
 };
 }
