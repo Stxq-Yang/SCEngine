@@ -16,7 +16,9 @@ class MouseEvent:public Event{
       int getScrollParam();
       void setPosition(int x,int y);
       int getX();
-      int getY();
+      int getY(); 
+      int getlastX();
+      int getlastY(); 
     private:
       MouseEventType eventType; 
       int x,y,lastx,lasty;
