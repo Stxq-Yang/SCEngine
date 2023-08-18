@@ -2,7 +2,7 @@
 namespace SCE  {
   int PaintEvent::firstlevel = 3;
   std::string PaintEvent::EventClassName = "PaintEvent";
-  #ifdef _WIN32
+    #ifdef _WIN32
         HWND PaintEvent::getWindow(){
           return window;
         }
