@@ -1,7 +1,7 @@
 #include "KeyEvent.h"
 namespace SCE{
   int KeyEvent::firstlevel = 5;
-  std::string TimerEvent::EventClassName = "KeyEvent";
+  std::string KeyEvent::EventClassName = "KeyEvent";
   void KeyEvent::setEventType(KeyEventType type){
     eventType=type;
   }
