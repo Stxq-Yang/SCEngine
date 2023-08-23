@@ -1,3 +1,6 @@
+#ifndef RESIZEEVENT_H
+#define RESIZEEVENT_H
+
 #include "Event.h"
 #ifdef _WIN32
      #include <windows.h>
@@ -7,7 +10,10 @@
 namespace SCE{
 class ResizeEvent:public Event{
 public:
-  ResizeEvent(){}
+  ResizeEvent(){
+    firstlevel=5;
+    EventClassName="ResizeEvent";
+  }
   void setSize(int width,int high);
   int getWidth();
   int getHigh();
@@ -25,5 +31,6 @@ private:
    #elif __linux__
         Window window;
    #endif
+};
 }
-}
+#endif // RESIZEEVENT_H

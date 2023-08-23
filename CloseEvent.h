@@ -1,6 +1,3 @@
-#ifndef PAINTEVENT_H
-#define PAINTEVENT_H
-
 #include "Event.h"
 #ifdef _WIN32
      #include <windows.h>
@@ -8,12 +5,12 @@
      #include <X11/Xlib.h>
 #endif
 namespace SCE{
-class PaintEvent :public Event{
+class CloseEvent :public Event{
 public:
-     PaintEvent(){
-         firstlevel=3;
-         EventClassName="PaintEvent";
-     }
+     CloseEvent(){
+        firstlevel=5;
+        EventClassName="CloseEvent";
+      }
      #ifdef _WIN32
           HWND getWindow();
           void setWindow(HWND window);
@@ -29,4 +26,5 @@ private:
      #endif
 };
 }
-#endif // PAINTevent_h
+
+

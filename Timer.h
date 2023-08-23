@@ -2,6 +2,10 @@
 #define TIMER_H
 #include <functional>
 #include <pthread.h>
+#include <chrono>
+#include <map>
+#include <vector>
+#include <utility>
 #include "TimerEvent.h"
 
 namespace SCE{
@@ -9,9 +13,9 @@ class Timer{
 public:
     using Clock = std::chrono::high_resolution_clock;
     using TimePoint = std::chrono::time_point<Clock>;
-    
-    Timer(double speed=1.0f); // 构造函数，初始化计时器
-    static long long getRealTime() const; // 获取当前真实时间（以毫秒为单位）
+
+    Timer(double speed=1.0f):speed(speed){} // 构造函数，初始化计时器
+    static long long getRealTime(); // 获取当前真实时间（以毫秒为单位）
     double getTime() const; // 获取经过的时间（以秒为单位）
     void sleep(unsigned long milliseconds); // 使程序休眠一定时间（以毫秒为单位）
     void setTimer(std::function<bool(long long)> trigger , TimerEvent *event); // 设置定时器：传入触发条件和回调函数
@@ -22,13 +26,13 @@ public:
 
 private:
     static void* threadwrapper(void* arg); // 线程包装函数，用于创建计时器线程
-    
+
     TimePoint startTime; // 计时器开始时间点
     long long gtime; // 经过的时间（以秒为单位）
     double speed; // 计时速度倍率
     TimePoint lastRecordedTime; // 上次记录时间点
     pthread_t timerthread; // 计时器线程
-    std::vector<std::pair<std::function<bool(long long)> , TimerEvent* > > timers; // 定时器触发条件和回调函数的集合
+    std::vector<std::pair<std::function<bool(long long)> , TimerEvent*> > timers; // 定时器触发条件和回调函数的集合
 };
 };
 #endif

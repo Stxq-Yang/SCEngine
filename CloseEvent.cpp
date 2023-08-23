@@ -1,18 +1,19 @@
-#include "PaintEvent.h"
+#include "CloseEvent.h"
 namespace SCE  {
     #ifdef _WIN32
-        HWND PaintEvent::getWindow(){
+        HWND CloseEvent::getWindow(){
           return window;
         }
-        void PaintEvent::setWindow(HWND window){
+        void CloseEvent::setWindow(HWND window){
           this->window=window;
         }
    #elif __linux__
-        HWND PaintEvent::getWindow(){
+        HWND CloseEvent::getWindow(){
           return window;
         }
-        void PaintEvent::setWindow(Window window){
+        void CloseEvent::setWindow(Window window){
           this->window=window;
         }
    #endif
 }
+

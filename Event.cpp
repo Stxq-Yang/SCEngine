@@ -2,14 +2,12 @@
 namespace SCE{
 int Event::firstlevel = 5;
 std::string Event::EventClassName = "BaseEvent";
-Event::Event() {
-}
 
-int Event::getFirstLevel() {
+int Event::getFirstLevel() const {
     return firstlevel;
 }
 
-std::string Event::getClassName() {
+std::string Event::getClassName()const {
     return EventClassName;
 }
 };

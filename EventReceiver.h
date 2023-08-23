@@ -4,6 +4,7 @@
 #include <functional>
 #include <vector>
 #include <map>
+#include <queue>
 #include "Event.h"
 namespace SCE{
 class EventReceiver {
@@ -15,6 +16,14 @@ public:
     void unregisterEvent(Event* event, int index);
 
     void unregisterEvent(Event* event);
+
+    void registerEvent(std::string classname, std::function<void(Event*)> todo);
+
+    void unregisterEvent(std::string classname, int index);
+
+    void unregisterEvent(std::string classname);
+
+    int EventNum(std::string classname);
 
     void unregisterAll();
 
@@ -28,10 +37,8 @@ struct eventQueueOrder {
         return event1->getFirstLevel() < event2->getFirstLevel();
     }
 };
-
-std::priority_queue<Event*, std::vector<Event*>, eventQueueOrder> EventQueue;
-std::vector<EventReceiver*> EventBus;
-
+extern std::priority_queue<Event*, std::vector<Event*>, eventQueueOrder> EventQueue;
+extern std::vector<EventReceiver*> EventBus;
 void processEvent();
 
 void sendEvent(Event* event);

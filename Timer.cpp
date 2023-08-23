@@ -2,9 +2,10 @@
 #include <vector>
 #include <thread>
 #include "Timer.h"
-#include "TimeEvent.h"
+#include "TimerEvent.h"
+#include "EventReceiver.h"
 namespace SCE{
-long long Timer::getRealTime() const {
+long long Timer::getRealTime(){
     auto currentTime = Clock::now();
     return std::chrono::duration_cast<std::chrono::milliseconds>(currentTime.time_since_epoch()).count();
 }

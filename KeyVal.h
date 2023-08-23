@@ -1,3 +1,6 @@
+#ifndef KEYVAL_H
+#define KEYVAL_H
+
 namespace SCE{
 #ifdef __WIN32
 enum SCkey{
@@ -209,3 +212,4 @@ enum SCKey {
 };
 #endif
 }
+#endif // KeyVal

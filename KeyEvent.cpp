@@ -1,17 +1,15 @@
 #include "KeyEvent.h"
 namespace SCE{
-  int KeyEvent::firstlevel = 5;
-  std::string KeyEvent::EventClassName = "KeyEvent";
   void KeyEvent::setEventType(KeyEventType type){
     eventType=type;
   }
   KeyEventType KeyEvent::getEventType(){
     return eventType;
   }
-  void KeyEvent::setKayCode(SCKey code){
-    keyCode=code
+  void KeyEvent::setKayCode(SCkey code){
+    keyCode=code;
   }
-  SCKey KeyEvent::getKeyCodee(){
+  SCkey KeyEvent::getKeyCode(){
     return keyCode;
   }
 }

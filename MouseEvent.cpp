@@ -1,7 +1,5 @@
 #include "MouseEvent.h"
 namespace SCE{
-  int MouseEvent::firstlevel = 5;
-  std::string MouseEvent::EventClassName = "MouseEvent";
   void MouseEvent::setEventType(MouseEventType type){
     eventType=type;
   }
@@ -15,8 +13,6 @@ namespace SCE{
     return param;
   }
   void MouseEvent::setPosition(int x,int y){
-    this->lastx=this->x;
-    this-.lasty=this->y;
     this->x=x;
     this->y=y;
   }
@@ -25,11 +21,5 @@ namespace SCE{
   }
   int MouseEvent::getY(){
     return y;
-  }
-  int MouseEvent::getlastX(){
-    return lastx;
-  }
-  int MouseEvent::getlastY(){
-    return lasty;
   }
 }

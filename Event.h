@@ -5,13 +5,13 @@
 namespace SCE{
 class Event {
 public:
-    Event();
+    Event(){}
 
-    static int getFirstLevel();
+    int getFirstLevel() const;
 
-    std::string getClassName();
+    std::string getClassName() const;
 
-private:
+protected:
     static int firstlevel;
     static std::string EventClassName;
 };
