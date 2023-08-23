@@ -7,22 +7,103 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="default">
-				<Option output="SCEngine" prefix_auto="1" extension_auto="1" />
+				<Option platforms="Windows;Unix;" />
+				<Option output="bin/SCEngine.so" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="0" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-pthread" />
+				</Compiler>
+				<Linker>
+					<Add option="-lopengl32" />
+					<Add option="-lgdi32" />
+				</Linker>
+			</Target>
+			<Target title="test">
+				<Option output="bin/SCEngine" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/" />
+				<Option object_output="obj/test/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lopengl32" />
+					<Add option="-lgdi32" />
+					<Add library="bin/SCEngine.so" />
+				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="Device.cpp" />
-		<Unit filename="Event.cpp" />
+		<Unit filename="CloseEvent.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="CloseEvent.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Device.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="Device.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Driver.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="Driver.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Event.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="Event.h">
+			<Option target="test" />
+		</Unit>
 		<Unit filename="EventReceiver.cpp" />
+		<Unit filename="EventReceiver.h">
+			<Option target="test" />
+		</Unit>
 		<Unit filename="KeyEvent.cpp" />
+		<Unit filename="KeyEvent.h">
+			<Option target="test" />
+		</Unit>
+		<Unit filename="KeyVal.h">
+			<Option target="test" />
+		</Unit>
 		<Unit filename="MouseEvent.cpp" />
-		<Unit filename="PaintEvent.cpp" />
-		<Unit filename="ResizeEvent.cpp" />
-		<Unit filename="Timer.cpp" />
-		<Unit filename="TimerEvent.cpp" />
+		<Unit filename="MouseEvent.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="PaintEvent.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="PaintEvent.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="ResizeEvent.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="ResizeEvent.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Timer.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="Timer.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="TimerEvent.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="TimerEvent.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="test.cpp">
+			<Option target="test" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
