@@ -40,7 +40,8 @@ public:
           HDC getDC();
           HWND getWindow();
      #elif __linux__
-          HWND getWindow();
+          Window getWindow();
+          GC getGC();
      #endif
      bool run();
      bool drop();
@@ -54,6 +55,17 @@ private:
          HDC deviceContext;
     #elif __linux__
          Window window;
+         Display* display;
+         GC graphicsContext;
+         Atom deleteAtom;
+         int screen;
+         int width;
+         int height;
+         std::string title;
+
+         static Atom WM_DELETE_WINDOW;
+
+         static void handleEvent(XEvent event, Display* display, Window window);
     #endif
 };
 }

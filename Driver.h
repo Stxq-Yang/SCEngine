@@ -4,6 +4,9 @@
 #include <GL/gl.h>
 #ifdef _WIN32
 #include <gl/wglext.h>
+#elif __linux__
+#include <X11/Xlib.h>
+#include <GL/glx.h>
 #endif
 namespace SCE{
 class Driver{

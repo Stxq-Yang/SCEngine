@@ -3,6 +3,7 @@
 #include <GL/gl.h>
 //Windows 32
 namespace SCE{
+#ifdef _WIN32
 int windowsclassId=0;
 #define GET_X_LPARAM(lp) ((int)(short)LOWORD(lp))
 #define GET_Y_LPARAM(lp) ((int)(short)HIWORD(lp))
@@ -228,12 +229,7 @@ LRESULT CALLBACK Device::WindowProc(HWND hwnd ,UINT uMsg, WPARAM wParam,LPARAM l
 HDC Device::getDC(){
     return this->deviceContext;
 }
-std::array<int,2> Device::getSize(){
-    return {width,height};
-}
-std::string Device::gettitle(){
-    return this->title;
-}
+
 void Device::setSize(int width,int height){
     SetWindowPos(window, NULL,CW_USEDEFAULT, CW_USEDEFAULT, width, height,SWP_SHOWWINDOW);
     this->width=width;
@@ -243,12 +239,208 @@ void Device::settitle(std::string title){
     SetWindowText(window, title.c_str());
     this->title=title;
 }
-int Device::getWinClassId(){
-    return this->winClassId;
+
+bool Device::run(){
+    processEvents();
+    MSG msg;
+    if (PeekMessage(&msg, window, 0, 0, PM_REMOVE)) {
+        if (msg.message == WM_QUIT)
+            return false;
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    return true;
+
+}
+bool Device::drop(){
+    delete driver;
+    ReleaseDC(window, deviceContext);
+    DestroyWindow(window);
+    return true;
 }
 HWND Device::getWindow(){
     return this->window;
 }
+int Device::getWinClassId(){
+    return this->winClassId;
+}
+#elif __Linux__
+
+Atom Device::WM_DELETE_WINDOW = 0;
+
+Device::Device(int width, int height, std::string title)
+    : display(nullptr), window(0), graphicsContext(0), deleteAtom(0), screen(0),
+      width(width), height(height), title(title)
+{
+    display = XOpenDisplay(nullptr);
+
+    if (display == nullptr) {
+        std::cerr << "Failed to open X display" << std::endl;
+        exit(-1);
+    }
+
+    screen = DefaultScreen(display);
+
+    // Create window
+    window = XCreateSimpleWindow(display, RootWindow(display, screen), 0, 0,
+                                 width, height, 0, BlackPixel(display, screen),
+                                 WhitePixel(display, screen));
+
+    // Set window properties
+    XSetWindowAttributes windowAttributes;
+    windowAttributes.event_mask =
+        StructureNotifyMask | KeyPressMask | KeyReleaseMask |
+        ButtonPressMask | ButtonReleaseMask | PointerMotionMask;
+
+    XSetWMProtocols(display, window, &WM_DELETE_WINDOW, 1);
+
+    XChangeWindowAttributes(display, window, CWEventMask, &windowAttributes);
+    XStoreName(display, window, title.c_str());
+    XMapWindow(display, window);
+
+    // Create graphics context
+    graphicsContext = XDefaultGC(display, screen);
+
+    // Flush initial events
+    XSync(display, False);
+}
+
+void Device::setSize(int width, int height)
+{
+    XResizeWindow(display, window, width, height);
+    this->width = width;
+    this->height = height;
+}
+
+void Device::setTitle(std::string title)
+{
+    XStoreName(display, window, title.c_str());
+    this->title = title;
+}
+
+bool Device::run()
+{
+    XEvent event;
+    if (XPending(display)){
+        XNextEvent(display, &event);
+
+        handleEvent(event, display, window);
+
+        if (event.type == ClientMessage &&
+            static_cast<unsigned long>(event.xclient.data.l[0]) == deleteAtom) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Device::drop()
+{
+    if (display != nullptr) {
+        XDestroyWindow(display, window);
+        XCloseDisplay(display);
+        display = nullptr;
+        return true;
+    }
+
+    return false;
+}
+
+void Device::handleEvent(XEvent event, Display* display, Window window) {
+    switch (event.type) {
+        case ButtonPress:
+            if (event.xbutton.button == Button1) {
+                MouseEvent *mouseEvent = new MouseEvent();
+                mouseEvent->setPosition(event.xbutton.x, event.xbutton.y);
+                mouseEvent->setEventType(LeftButtonDown);
+                sendEvent(mouseEvent);
+            } else if (event.xbutton.button == Button3) {
+                MouseEvent *mouseEvent = new MouseEvent();
+                mouseEvent->setPosition(event.xbutton.x, event.xbutton.y);
+                mouseEvent->setEventType(RightButtonDown);
+                sendEvent(mouseEvent);
+            } else if (event.xbutton.button == Button2) {
+                MouseEvent *mouseEvent = new MouseEvent();
+                mouseEvent->setPosition(event.xbutton.x, event.xbutton.y);
+                mouseEvent->setEventType(MidButtonDown);
+                sendEvent(mouseEvent);
+            }else if (event.xbutton.button == Button4) {
+                MouseEvent *mouseEvent = new MouseEvent();
+                mouseEvent->setPosition(event.xbutton.x, event.xbutton.y);
+                mouseEvent->setEventType(Mouse_Scroll);
+                mouseEvent->setScrollParam(1);
+                sendEvent(mouseEvent);
+            }
+            else if (event.xbutton.button == Button5) {
+                MouseEvent *mouseEvent = new MouseEvent();
+                mouseEvent->setPosition(event.xbutton.x, event.xbutton.y);
+                mouseEvent->setEventType(Mouse_Ccroll);
+                mouseEvent->setScrollParam(1);
+                sendEvent(mouseEvent);
+            }
+            break;
+        case ButtonRelease:
+            if (event.xbutton.button == Button1) {
+                MouseEvent *mouseEvent = new MouseEvent();
+                mouseEvent->setPosition(event.xbutton.x, event.xbutton.y);
+                mouseEvent->setEventType(LeftButtonUp);
+                sendEvent(mouseEvent);
+            } else if (event.xbutton.button == Button3) {
+                MouseEvent *mouseEvent = new MouseEvent();
+                mouseEvent->setPosition(event.xbutton.x, event.xbutton.y);
+                mouseEvent->setEventType(RightButtonUp);
+                sendEvent(mouseEvent);
+            } else if (event.xbutton.button == Button2) {
+                MouseEvent *mouseEvent = new MouseEvent();
+                mouseEvent->setPosition(event.xbutton.x, event.xbutton.y);
+                mouseEvent->setEventType(MidButtonUp);
+                sendEvent(mouseEvent);
+            }
+            break;
+        case MotionNotify: {
+            int xPos = event.xmotion.x;
+            int yPos = event.xmotion.y;
+            MouseEvent *mouseEvent = new MouseEvent();
+            mouseEvent->setPosition(xPos, yPos);
+            mouseEvent->setEventType(Mouse_Move);
+            sendEvent(mouseEvent);
+            break;
+        }
+        case KeyPress: {
+            KeyEvent *keyEvent = new KeyEvent();
+            keyEvent->setEventType(KeyDown);
+            keyEvent->setKeyCode(static_cast<SCkey>(event.xkey.keycode));
+            sendEvent(keyEvent);
+            break;
+        }
+        case KeyRelease: {
+            KeyEvent *keyEvent = new KeyEvent();
+            keyEvent->setEventType(KeyUp);
+            keyEvent->setKeyCode(static_cast<SCkey>(event.xkey.keycode));
+            sendEvent(keyEvent);
+            break;
+        }
+        case ConfigureNotify:
+            int width = event.xconfigure.width;
+            int height = event.xconfigure.height;
+            ResizeEvent *resizeEvent = new ResizeEvent();
+            resizeEvent->setWindow(window);
+            resizeEvent->setSize(width, height);
+            sendEvent(resizeEvent);
+            break;
+        case DestroyNotify:
+            PostQuitMessage(0);
+            break;
+        default:
+            break;
+    }
+}
+Window Device::getWindow(){
+    return this->window;
+}
+#endif
+
 void  Device::OnPaint(std::function<void(PaintEvent*)> eventFunc){
     eventReceiver.unregisterEvent("PaintEvent",eventReceiver.EventNum("PaintEvent")-1);
     eventReceiver.registerEvent("PaintEvent",[=](Event* event){PaintEvent* nevent=static_cast<PaintEvent*>(event);if (nevent!=nullptr)eventFunc(nevent);});
@@ -274,23 +466,11 @@ void  Device::OnResizeEvent(std::function<void(ResizeEvent*)> eventFunc){
     eventReceiver.registerEvent("ResizeEvent",[=](Event* event){ResizeEvent* nevent=static_cast<ResizeEvent*>(event);if (nevent!=nullptr)eventFunc(nevent);});
     eventReceiver.registerEvent("ResizeEvent",[=](Event* event){delete event;});
 }
-bool Device::run(){
-    processEvents();
-    MSG msg;
-    if (PeekMessage(&msg, window, 0, 0, PM_REMOVE)) {
-        if (msg.message == WM_QUIT)
-            return false;
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-
-    return true;
-
+std::array<int,2> Device::getSize(){
+    return {width,height};
 }
-bool Device::drop(){
-    delete driver;
-    ReleaseDC(window, deviceContext);
-    DestroyWindow(window);
-    return true;
+std::string Device::gettitle(){
+    return this->title;
 }
+
 }

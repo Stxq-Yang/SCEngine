@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1692776637 source:d:\workspace\scengine-main\device.cpp
+1692784081 source:d:\workspace\scengine-main\device.cpp
 	"Device.h"
 	"Driver.h"
 	<GL/gl.h>
@@ -82,7 +82,7 @@
 	<windows.h>
 	<X11/Xlib.h>
 
-1692773849 d:\workspace\scengine-main\device.h
+1692783902 d:\workspace\scengine-main\device.h
 	"Event.h"
 	"EventReceiver.h"
 	"Timer.h"
@@ -96,13 +96,15 @@
 	<windows.h>
 	<X11/Xlib.h>
 
-1692773396 source:d:\workspace\scengine-main\driver.cpp
+1692784753 source:d:\workspace\scengine-main\driver.cpp
 	"Driver.h"
 
-1692773387 d:\workspace\scengine-main\driver.h
+1692784377 d:\workspace\scengine-main\driver.h
 	"Device.h"
 	<GL/gl.h>
 	<gl/wglext.h>
+	<X11/Xlib.h>
+	<GL/glx.h>
 
 1692777039 source:d:\workspace\scengine-main\test.cpp
 	"Device.h"

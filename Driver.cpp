@@ -1,5 +1,6 @@
 #include "Driver.h"
 namespace SCE{
+#ifdef _WIN32
 Driver::Driver(Device* device){
     this->pdevice=device;
     PIXELFORMATDESCRIPTOR pfd;
@@ -18,11 +19,11 @@ Driver::Driver(Device* device){
 
     // 创建渲染上下文
     renderContext = wglCreateContext(device->getDC());
-
 }
 Driver::~Driver(){
     wglDeleteContext(renderContext);
 }
+
 void Driver::Begin(std::array<int,4 >color){
     wglMakeCurrent(pdevice->getDC(), renderContext);
     glClearColor(color[0]/255.0f,color[1]/255.0f,color[2]/255.0f,color[3]/255.0f);
@@ -38,6 +39,44 @@ void Driver::Flush(){
     glFlush();
     pdevice->timer.recordTime();
 }
+#elif __linux__
+Driver::Driver(Device* device) {
+    this->pdevice = device;
+
+    static int visualAttribs[] = {
+        GLX_RGBA,
+        GLX_DEPTH_SIZE, 16,
+        GLX_DOUBLEBUFFER,
+        None
+    };
+
+    XVisualInfo* visualInfo = glXChooseVisual(device->display, DefaultScreen(device->display), visualAttribs);
+    this->renderContext = glXCreateContext(device->display, visualInfo, NULL, GL_TRUE);
+    XFree(visualInfo);
+
+    glXMakeCurrent(device->display, device->window, renderContext);
+}
+
+Driver::~Driver(){
+    glXMakeCurrent(pdevice-> display, None, NULL);
+    glXDestroyContext(pdevice->display, renderContext);
+}
+
+void Driver::Begin(std::array<int,4> color) {
+    glClearColor(color[0]/255.0f, color[1]/255.0f, color[2]/255.0f, color[3]/255.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Driver::End() {
+    Flush();
+    glXMakeCurrent(pdevice-> display, None, NULL);
+}
+void Driver::Flush(){
+    glFlush();
+    glXSwapBuffers(pdevice->display, pdevice->window);
+    pdevice->timer.recordTime();
+}
+#endif
 std::array<int, 2> Driver::ConvertOpenGLPoint(const std::array<int, 2>& openglCoord){
     std::array<int, 2> windowSize=pdevice->getSize();
     int clientWidth = windowSize[0];
