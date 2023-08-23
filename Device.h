@@ -34,6 +34,7 @@ public:
 	void  OnKeyEvent(std::function<void(KeyEvent*)> eventFunc);
 	void  OnMouseEvent(std::function<void(MouseEvent*)> eventFunc);
 	void  OnCloseEvent(std::function<void(CloseEvent*)> eventFunc);
+	void  OnResizeEvent(std::function<void(ResizeEvent*)> eventFunc);
     #ifdef _WIN32
           int getWinClassId();
           HDC getDC();

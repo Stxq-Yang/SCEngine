@@ -1,0 +1,116 @@
+# depslib dependency file v1.0
+1692776637 source:d:\workspace\scengine-main\device.cpp
+	"Device.h"
+	"Driver.h"
+	<GL/gl.h>
+
+1692710961 source:d:\workspace\scengine-main\event.cpp
+	"Event.h"
+
+1692711063 d:\workspace\scengine-main\event.h
+	<string>
+
+1692753334 source:d:\workspace\scengine-main\eventreceiver.cpp
+	"EventReceiver.h"
+
+1692753303 d:\workspace\scengine-main\eventreceiver.h
+	<functional>
+	<vector>
+	<map>
+	<queue>
+	"Event.h"
+
+1692674956 source:d:\workspace\scengine-main\timer.cpp
+	<chrono>
+	<vector>
+	<thread>
+	"Timer.h"
+	"TimerEvent.h"
+	"EventReceiver.h"
+
+1692686592 d:\workspace\scengine-main\timer.h
+	<functional>
+	<pthread.h>
+	<chrono>
+	<map>
+	<vector>
+	<utility>
+	"TimerEvent.h"
+
+1692711189 d:\workspace\scengine-main\timerevent.h
+	"Event.h"
+
+1692709050 source:d:\workspace\scengine-main\mouseevent.cpp
+	"MouseEvent.h"
+
+1692710926 d:\workspace\scengine-main\mouseevent.h
+	"Event.h"
+
+1692757174 source:d:\workspace\scengine-main\keyevent.cpp
+	"KeyEvent.h"
+
+1692757169 d:\workspace\scengine-main\keyevent.h
+	"KeyVal.h"
+	"Event.h"
+
+1692757111 d:\workspace\scengine-main\keyval.h
+
+1692711292 source:d:\workspace\scengine-main\timerevent.cpp
+	"TimerEvent.h"
+
+1692711020 source:d:\workspace\scengine-main\paintevent.cpp
+	"PaintEvent.h"
+
+1692711665 d:\workspace\scengine-main\paintevent.h
+	"Event.h"
+	<windows.h>
+	<X11/Xlib.h>
+
+1692711308 source:d:\workspace\scengine-main\closeevent.cpp
+	"CloseEvent.h"
+
+1692711674 d:\workspace\scengine-main\closeevent.h
+	"Event.h"
+	<windows.h>
+	<X11/Xlib.h>
+
+1692708998 source:d:\workspace\scengine-main\resizeevent.cpp
+	"ResizeEvent.h"
+
+1692710989 d:\workspace\scengine-main\resizeevent.h
+	"Event.h"
+	<windows.h>
+	<X11/Xlib.h>
+
+1692773849 d:\workspace\scengine-main\device.h
+	"Event.h"
+	"EventReceiver.h"
+	"Timer.h"
+	"PaintEvent.h"
+	"ResizeEvent.h"
+	"MouseEvent.h"
+	"KeyEvent.h"
+	"CloseEvent.h"
+	<functional>
+	<array>
+	<windows.h>
+	<X11/Xlib.h>
+
+1692773396 source:d:\workspace\scengine-main\driver.cpp
+	"Driver.h"
+
+1692773387 d:\workspace\scengine-main\driver.h
+	"Device.h"
+	<GL/gl.h>
+	<gl/wglext.h>
+
+1692777039 source:d:\workspace\scengine-main\test.cpp
+	"Device.h"
+	"Driver.h"
+	<GL\GL.h>
+
+1692756034 d:\workspace\scengine-main\device.cpp
+	"Device.h"
+	"Driver.h"
+	<GL/gl.h>
+

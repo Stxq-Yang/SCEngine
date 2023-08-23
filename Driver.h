@@ -14,6 +14,8 @@ public:
     std::array<int, 2> ConvertOpenGLPoint(const std::array<int, 2>& openglCoord);
     void Flush();
     std::array<int, 2> ConvertPointToOpenGL(const std::array<int, 2>& gdiCoord);
+    void Begin(std::array<int,4 >color);
+    void End();
 private:
     #ifdef _WIN32
     HGLRC renderContext;

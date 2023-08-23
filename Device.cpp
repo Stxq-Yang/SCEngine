@@ -63,8 +63,8 @@ LRESULT CALLBACK Device::WindowProc(HWND hwnd ,UINT uMsg, WPARAM wParam,LPARAM l
             return 0;
         case WM_DESTROY:
         {
-            // 窗口销毁的事件处理
             PostQuitMessage(0);
+            return 0;
         }
         return 0;
         case WM_PAINT:
@@ -235,6 +235,7 @@ std::string Device::gettitle(){
     return this->title;
 }
 void Device::setSize(int width,int height){
+    SetWindowPos(window, NULL,CW_USEDEFAULT, CW_USEDEFAULT, width, height,SWP_SHOWWINDOW);
     this->width=width;
     this->height=height;
 }
@@ -268,7 +269,13 @@ void  Device::OnCloseEvent(std::function<void(CloseEvent*)> eventFunc){
     eventReceiver.registerEvent("CloseEvent",[=](Event* event){CloseEvent* nevent=static_cast<CloseEvent*>(event);if (nevent!=nullptr)eventFunc(nevent);});
     eventReceiver.registerEvent("CloseEvent",[=](Event* event){PostQuitMessage(0);delete event;});
 }
+void  Device::OnResizeEvent(std::function<void(ResizeEvent*)> eventFunc){
+    eventReceiver.unregisterEvent("ResizeEvent",eventReceiver.EventNum("ResizeEvent")-1);
+    eventReceiver.registerEvent("ResizeEvent",[=](Event* event){ResizeEvent* nevent=static_cast<ResizeEvent*>(event);if (nevent!=nullptr)eventFunc(nevent);});
+    eventReceiver.registerEvent("ResizeEvent",[=](Event* event){delete event;});
+}
 bool Device::run(){
+    processEvents();
     MSG msg;
     if (PeekMessage(&msg, window, 0, 0, PM_REMOVE)) {
         if (msg.message == WM_QUIT)
@@ -276,11 +283,13 @@ bool Device::run(){
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-    processEvents();
+
     return true;
+
 }
 bool Device::drop(){
     delete driver;
+    ReleaseDC(window, deviceContext);
     DestroyWindow(window);
     return true;
 }

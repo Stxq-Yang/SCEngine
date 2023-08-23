@@ -18,18 +18,22 @@ Driver::Driver(Device* device){
 
     // 创建渲染上下文
     renderContext = wglCreateContext(device->getDC());
-    wglMakeCurrent(device->getDC(), renderContext);
 
-    // 进行 OpenGL 初始化
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // 设置清除颜色为黑色
-    glClearDepth(1.0f);
 }
 Driver::~Driver(){
-    wglMakeCurrent(NULL, NULL);
     wglDeleteContext(renderContext);
 }
-void Driver::Flush(){
+void Driver::Begin(std::array<int,4 >color){
+    wglMakeCurrent(pdevice->getDC(), renderContext);
+    glClearColor(color[0]/255.0f,color[1]/255.0f,color[2]/255.0f,color[3]/255.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+}
+void Driver::End(){
+    Flush();
+    wglMakeCurrent(NULL, NULL);
+}
+void Driver::Flush(){
     SwapBuffers(pdevice->getDC());
     glFlush();
     pdevice->timer.recordTime();
