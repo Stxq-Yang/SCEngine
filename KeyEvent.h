@@ -6,7 +6,6 @@
 namespace SCE{
   enum KeyEventType{
     KeyDown,
-    KeyPress,
     KeyUp
   };
   class KeyEvent :public Event{
@@ -17,7 +16,7 @@ namespace SCE{
       }
       void setEventType(KeyEventType type);
       KeyEventType getEventType();
-      void setKayCode(SCkey code);
+      void setKeyCode(SCkey code);
       SCkey getKeyCode();
     private:
       SCkey keyCode;

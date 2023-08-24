@@ -15,7 +15,7 @@ public:
           HWND getWindow();
           void setWindow(HWND window);
      #elif __linux__
-          HWND getWindow();
+          Window getWindow();
           void setWindow(Window window);
      #endif
 private:

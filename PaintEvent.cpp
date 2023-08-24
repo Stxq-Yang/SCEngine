@@ -8,7 +8,7 @@ namespace SCE  {
           this->window=window;
         }
    #elif __linux__
-        HWND PaintEvent::getWindow(){
+        Window PaintEvent::getWindow(){
           return window;
         }
         void PaintEvent::setWindow(Window window){

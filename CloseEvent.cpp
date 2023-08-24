@@ -8,7 +8,7 @@ namespace SCE  {
           this->window=window;
         }
    #elif __linux__
-        HWND CloseEvent::getWindow(){
+        Window CloseEvent::getWindow(){
           return window;
         }
         void CloseEvent::setWindow(Window window){

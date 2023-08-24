@@ -15,6 +15,7 @@
      #include <windows.h>
 #elif __linux__
      #include <X11/Xlib.h>
+     #include <X11/Xutil.h>
 #endif
 
 namespace SCE{
@@ -29,7 +30,7 @@ public:
 	void setSize(int width,int height);
 	std::array<int,2> getSize();
     std::string gettitle();
-    void  settitle(std::string title);
+        void  settitle(std::string title);
 	void  OnPaint(std::function<void(PaintEvent*)> eventFunc);
 	void  OnKeyEvent(std::function<void(KeyEvent*)> eventFunc);
 	void  OnMouseEvent(std::function<void(MouseEvent*)> eventFunc);
@@ -42,6 +43,7 @@ public:
      #elif __linux__
           Window getWindow();
           GC getGC();
+          Display* display;
      #endif
      bool run();
      bool drop();
@@ -55,13 +57,10 @@ private:
          HDC deviceContext;
     #elif __linux__
          Window window;
-         Display* display;
+         
          GC graphicsContext;
          Atom deleteAtom;
          int screen;
-         int width;
-         int height;
-         std::string title;
 
          static Atom WM_DELETE_WINDOW;
 

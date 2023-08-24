@@ -1,6 +1,6 @@
 #include "Device.h"
 #include "Driver.h"
-#include <GL\GL.h>
+#include <GL/gl.h>
 int main(){
     SCE::Device* device=new SCE::Device(400,400,"Hello Window");
     float theta=0.0f;

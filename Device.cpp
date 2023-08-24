@@ -1,6 +1,7 @@
 #include "Device.h"
 #include "Driver.h"
 #include <GL/gl.h>
+#include <iostream>
 //Windows 32
 namespace SCE{
 #ifdef _WIN32
@@ -265,7 +266,7 @@ HWND Device::getWindow(){
 int Device::getWinClassId(){
     return this->winClassId;
 }
-#elif __Linux__
+#elif __linux__
 
 Atom Device::WM_DELETE_WINDOW = 0;
 
@@ -304,6 +305,13 @@ Device::Device(int width, int height, std::string title)
 
     // Flush initial events
     XSync(display, False);
+    
+     this->eventReceiver.registerEvent("PaintEvent",[](Event* event){delete event;});
+    this->eventReceiver.registerEvent("KeyEvent",[](Event* event){delete event;});
+    this->eventReceiver.registerEvent("MouseEvent",[](Event* event){delete event;});
+    this->eventReceiver.registerEvent("ResizeEvent",[](Event* event){delete event;});
+    this->eventReceiver.registerEvent("CloseEvent",[](Event* event){delete event;});
+    driver=new Driver(this);
 }
 
 void Device::setSize(int width, int height)
@@ -313,7 +321,7 @@ void Device::setSize(int width, int height)
     this->height = height;
 }
 
-void Device::setTitle(std::string title)
+void Device::settitle(std::string title)
 {
     XStoreName(display, window, title.c_str());
     this->title = title;
@@ -321,16 +329,18 @@ void Device::setTitle(std::string title)
 
 bool Device::run()
 {
+    
     XEvent event;
-    if (XPending(display)){
-        XNextEvent(display, &event);
+    if(XPending(display)){
+	    XNextEvent(display, &event);
 
-        handleEvent(event, display, window);
+	    handleEvent(event, display, window);
 
-        if (event.type == ClientMessage &&
-            static_cast<unsigned long>(event.xclient.data.l[0]) == deleteAtom) {
-            return false;
-        }
+	   if (event.type == ClientMessage &&
+		static_cast<unsigned long>(event.xclient.data.l[0]) == deleteAtom) {
+
+		 return false;
+	}
     }
     return true;
 }
@@ -375,7 +385,7 @@ void Device::handleEvent(XEvent event, Display* display, Window window) {
             else if (event.xbutton.button == Button5) {
                 MouseEvent *mouseEvent = new MouseEvent();
                 mouseEvent->setPosition(event.xbutton.x, event.xbutton.y);
-                mouseEvent->setEventType(Mouse_Ccroll);
+                mouseEvent->setEventType(Mouse_Scroll);
                 mouseEvent->setScrollParam(1);
                 sendEvent(mouseEvent);
             }
@@ -421,7 +431,7 @@ void Device::handleEvent(XEvent event, Display* display, Window window) {
             sendEvent(keyEvent);
             break;
         }
-        case ConfigureNotify:
+        case ConfigureNotify:{
             int width = event.xconfigure.width;
             int height = event.xconfigure.height;
             ResizeEvent *resizeEvent = new ResizeEvent();
@@ -429,9 +439,13 @@ void Device::handleEvent(XEvent event, Display* display, Window window) {
             resizeEvent->setSize(width, height);
             sendEvent(resizeEvent);
             break;
-        case DestroyNotify:
-            PostQuitMessage(0);
+        }
+        case DestroyNotify:{
+            CloseEvent *event=new CloseEvent();
+            event->setWindow(window);
+            sendEvent(event);
             break;
+        }
         default:
             break;
     }
@@ -459,7 +473,7 @@ void  Device::OnMouseEvent(std::function<void(MouseEvent*)> eventFunc){
 void  Device::OnCloseEvent(std::function<void(CloseEvent*)> eventFunc){
     eventReceiver.unregisterEvent("CloseEvent",eventReceiver.EventNum("CloseEvent")-1);
     eventReceiver.registerEvent("CloseEvent",[=](Event* event){CloseEvent* nevent=static_cast<CloseEvent*>(event);if (nevent!=nullptr)eventFunc(nevent);});
-    eventReceiver.registerEvent("CloseEvent",[=](Event* event){PostQuitMessage(0);delete event;});
+    eventReceiver.registerEvent("CloseEvent",[=](Event* event){delete event;});
 }
 void  Device::OnResizeEvent(std::function<void(ResizeEvent*)> eventFunc){
     eventReceiver.unregisterEvent("ResizeEvent",eventReceiver.EventNum("ResizeEvent")-1);

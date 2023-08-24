@@ -19,10 +19,10 @@ namespace SCE  {
           this->window=window;
         }
    #elif __linux__
-        HWND ResizeEvent::getWindow(){
+        Window ResizeEvent::getWindow(){
           return window;
         }
-        void ResizeEvent::etWindow(Window window){
+        void ResizeEvent::setWindow(Window window){
           this->window=window;
         }
    #endif

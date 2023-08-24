@@ -23,7 +23,7 @@ private:
     #ifdef _WIN32
     HGLRC renderContext;
     #elif __linux__
-
+    GLXContext renderContext;
     #endif
 };
 }

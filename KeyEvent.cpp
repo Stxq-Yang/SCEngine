@@ -6,7 +6,7 @@ namespace SCE{
   KeyEventType KeyEvent::getEventType(){
     return eventType;
   }
-  void KeyEvent::setKayCode(SCkey code){
+  void KeyEvent::setKeyCode(SCkey code){
     keyCode=code;
   }
   SCkey KeyEvent::getKeyCode(){
