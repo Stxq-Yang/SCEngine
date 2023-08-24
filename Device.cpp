@@ -9,7 +9,7 @@ int windowsclassId=0;
 #define GET_X_LPARAM(lp) ((int)(short)LOWORD(lp))
 #define GET_Y_LPARAM(lp) ((int)(short)HIWORD(lp))
 Device::Device(int width,int height,std::string title){
-    // ×¢²á´°¿ÚÀà
+    // æ³¨å†Œçª—å£ç±»
     WNDCLASSEX wc;
     wc.cbSize = sizeof(WNDCLASSEX);
     wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -27,17 +27,17 @@ Device::Device(int width,int height,std::string title){
 
     if (!RegisterClassEx(&wc))
     {
-        MessageBox(NULL, "´°¿Ú×¢²áÊ§°Ü£¡", "´íÎó", MB_ICONERROR | MB_OK);
+        MessageBox(NULL, "çª—å£æ³¨å†Œå¤±è´¥ï¼", "é”™è¯¯", MB_ICONERROR | MB_OK);
         exit(-1);
     }
 
-    // ´´½¨´°¿Ú
+    // åˆ›å»ºçª—å£
     HWND hwnd = CreateWindowEx(0, (std::string("WindowClass")+std::to_string(this->winClassId)).c_str(), title.c_str(), WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, GetModuleHandle(NULL), NULL);
 
     if (hwnd == NULL)
     {
-        MessageBox(NULL, "´°¿Ú´´½¨Ê§°Ü£¡", "´íÎó", MB_ICONERROR | MB_OK);
+        MessageBox(NULL, "çª—å£åˆ›å»ºå¤±è´¥ï¼", "é”™è¯¯", MB_ICONERROR | MB_OK);
         exit(-1);
     }
 
@@ -56,7 +56,7 @@ LRESULT CALLBACK Device::WindowProc(HWND hwnd ,UINT uMsg, WPARAM wParam,LPARAM l
     switch (uMsg)
     {
         case WM_CLOSE:{
-            // ¹Ø±Õ´°¿ÚµÄÊÂ¼þ´¦Àí
+            // å…³é—­çª—å£çš„äº‹ä»¶å¤„ç†
             CloseEvent *event=new CloseEvent();
             event->setWindow(hwnd);
             sendEvent(event);
@@ -71,7 +71,7 @@ LRESULT CALLBACK Device::WindowProc(HWND hwnd ,UINT uMsg, WPARAM wParam,LPARAM l
         return 0;
         case WM_PAINT:
             {
-                // »æÖÆ´°¿ÚµÄÊÂ¼þ´¦Àí
+                // ç»˜åˆ¶çª—å£çš„äº‹ä»¶å¤„ç†
                 PaintEvent *event=new PaintEvent();
                 event->setWindow(hwnd);
                 sendEvent(event);
@@ -80,21 +80,21 @@ LRESULT CALLBACK Device::WindowProc(HWND hwnd ,UINT uMsg, WPARAM wParam,LPARAM l
 
         case WM_SIZE:
             {
-                // ´°¿Ú´óÐ¡¸Ä±äµÄÊÂ¼þ´¦Àí
+                // çª—å£å¤§å°æ”¹å˜çš„äº‹ä»¶å¤„ç†
                 ResizeEvent *event=new ResizeEvent();
                 event->setWindow(hwnd);
                 event->setSize(LOWORD(lParam),HIWORD(lParam));
                 sendEvent(event);
-                // ÔÚÕâÀï½øÐÐ´°¿Ú´óÐ¡¸Ä±äºóµÄ¸üÐÂ²Ù×÷
+                // åœ¨è¿™é‡Œè¿›è¡Œçª—å£å¤§å°æ”¹å˜åŽçš„æ›´æ–°æ“ä½œ
             }
             return 0;
 
         case WM_KEYDOWN:
             {
-                // ¼üÅÌ°´ÏÂµÄÊÂ¼þ´¦Àí
+                // é”®ç›˜æŒ‰ä¸‹çš„äº‹ä»¶å¤„ç†
                 KeyEvent *event=new KeyEvent();
                 event->setEventType(KeyDown);
-                event->setKayCode(static_cast<SCkey>(wParam));
+                event->setKeyCode(static_cast<SCkey>(wParam));
                 sendEvent(event);
             }
             return 0;
@@ -103,14 +103,14 @@ LRESULT CALLBACK Device::WindowProc(HWND hwnd ,UINT uMsg, WPARAM wParam,LPARAM l
             {
                 KeyEvent *event=new KeyEvent();
                 event->setEventType(KeyUp);
-                event->setKayCode(static_cast<SCkey>(wParam));
+                event->setKeyCode(static_cast<SCkey>(wParam));
                 sendEvent(event);
             }
             return 0;
 
         case WM_MOUSEMOVE:
             {
-                // Êó±êÒÆ¶¯µÄÊÂ¼þ´¦Àí
+                // é¼ æ ‡ç§»åŠ¨çš„äº‹ä»¶å¤„ç†
                 int xPos = GET_X_LPARAM(lParam);
                 int yPos = GET_Y_LPARAM(lParam);
                 POINT pt;
@@ -182,12 +182,12 @@ LRESULT CALLBACK Device::WindowProc(HWND hwnd ,UINT uMsg, WPARAM wParam,LPARAM l
                 sendEvent(event);
             }
             return 0;
-        // ÆäËû´°¿ÚÏûÏ¢´¦Àí...
+        // å…¶ä»–çª—å£æ¶ˆæ¯å¤„ç†...
         case WM_MOUSEWHEEL:
         {
-            // Êó±ê¹öÂÖ¹ö¶¯µÄÊÂ¼þ´¦Àí
+            // é¼ æ ‡æ»šè½®æ»šåŠ¨çš„äº‹ä»¶å¤„ç†
             int delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
-            // ´¦ÀíÊó±ê¹öÂÖ¹ö¶¯ÊÂ¼þ
+            // å¤„ç†é¼ æ ‡æ»šè½®æ»šåŠ¨äº‹ä»¶
             MouseEvent *event=new MouseEvent();
             event->setScrollParam(delta);
             event->setEventType(Mouse_Scroll);
